@@ -1,41 +1,41 @@
-# Heroku Buildpack: Ø
+# Heroku Buildpack: Custom SSH key
 
-Use Ø if you need Heroku to execute a binary.
+Use *Custom SSH key buildpack* if you need to, for example, download a dependency stored in a private repository.
+
+Based on [http://stackoverflow.com/a/29677091/3303182](http://stackoverflow.com/a/29677091/3303182).
 
 ## Usage
 
-Create a directory for our Heroku app:
+- Add the buildpack to your app:
+  `heroku buildpacks:add --index 1 https://github.com/simon0191/custom-ssh-key-buildpack`
 
-```bash
-$ mkdir -p myapp/bin
-$ cd myapp
-```
+- Generate a new SSH key (https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/)
 
-Here is an example of an executable that will run on 64bit linux machine:
+  For this example I will suppose that you named the key `deploy_key`.
 
-```bash
-$ echo -e "#\!/usr/bin/env bash\n echo hello world" > ./bin/program
-$ echo -e "program: bin/program" > Procfile
-$ chmod +x ./bin/program
-$ ./bin/program
-hello world
-```
+- Add the ssh key to your private repository account.
 
-Push the app to Heroku and run our executable:
+  * Github: https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/
 
-```bash
-$ git init; git add .; git commit -am 'init'
-$ heroku create --buildpack http://github.com/ryandotsmith/null-buildpack.git
-$ git push heroku master
-$ heroku run program
-Running `program` attached to terminal... up, run.8663
-hello world
-```
+  * Bitbucket: https://confluence.atlassian.com/bitbucket/add-an-ssh-key-to-an-account-302811853.html
+
+- Add CUSTOM_SSH_KEY and CUSTOM_SSH_KEY_HOSTS environment variables to you heroku app
+
+  * CUSTOM_SSH_KEY must be base64 encoded
+  * CUSTOM_SSH_KEY_HOSTS is a comma separated list of the hosts that will use the custom SSH key
+
+  ```
+  # OSX
+  $ heroku config:set CUSTOM_SSH_KEY=$(base64 --input ~/.ssh/deploy_key.pub) CUSTOM_SSH_KEY_HOSTS=bitbucket.org,github.com
+
+  # Linux
+  $ heroku config:set CUSTOM_SSH_KEY=$(base64 ~/.ssh/deploy_key.pub) CUSTOM_SSH_KEY_HOSTS=bitbucket.org,github.com
+  ```
+
+- Deploy your app and enjoy :)
 
 ## Motivation
 
-I wanted to run various executables (e.g. [log-shuttle](https://github.com/ryandotsmith/log-shuttle)) on Heroku without compiling them on Heroku. Thus, I compile programs on my linux 64 machine, or fetch the binary from the project, commit them to a repo and then run them on Heroku with the Ø buildpack.
-
-## Issues
-
-You will need to make sure that a 64bit linux machine can execute the binary.
+I needed to install dependencies stored in private repositories but I didn't want to hardcode passwords in the code.
+I found a solution in [StackOverflow](http://stackoverflow.com/a/29677091/3303182) but it only worked for the node buildpack
+so I decided to create this technology agnostic buildpack.
