@@ -1,4 +1,36 @@
 #!/usr/bin/env bash
 # bin/compile <build-dir> <cache-dir>
 
-echo "-----> Nothing to do."
+# Generates an SSH config file for connections if a config var exists.
+
+if [[ "$CUSTOM_SSH_KEY" != "" && "$CUSTOM_SSH_KEY_HOSTS" != "" ]]; then
+  echo "" >&1
+
+  # Ensure we have an ssh folder
+  if [ ! -d ~/.ssh ]; then
+    mkdir -p ~/.ssh
+    chmod 700 ~/.ssh
+  fi
+
+  # Load the private key into a file.
+  echo $CUSTOM_SSH_KEY | base64 --decode > ~/.ssh/deploy_key
+
+  # Change the permissions on the file to
+  # be read-only for this user.
+  chmod 400 ~/.ssh/deploy_key
+
+  # Split $CUSTOM_SSH_KEY_HOSTS
+  IFS=', ' read -r -a array <<< "$CUSTOM_SSH_KEY_HOSTS"
+
+  # Setup the ssh config file.
+  for element in "${array[@]}"
+  do
+    echo -e "Host $element\n"\
+            "  IdentityFile ~/.ssh/deploy_key\n"\
+            "  IdentitiesOnly yes\n"\
+            "  UserKnownHostsFile=/dev/null\n"\
+            "  StrictHostKeyChecking no"\
+            >> ~/.ssh/config
+  done
+
+fi

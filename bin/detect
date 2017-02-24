@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 # bin/detect <build-dir>
 
-echo "Null"
-exit 0
+if [[ "$CUSTOM_SSH_KEY" != "" && "$CUSTOM_SSH_KEY_HOSTS" != "" ]]; then
+  echo "Custom SSH key and custom SSH key hosts detected"
+  exit 0
+else
+  echo "Missing CUSTOM_SSH_KEY and CUSTOM_SSH_KEY_HOSTS environment variables"
+  exit 1
+fi
