@@ -26,10 +26,10 @@ Based on [http://stackoverflow.com/a/29677091/3303182](http://stackoverflow.com/
 
   ```
   # OSX
-  $ heroku config:set CUSTOM_SSH_KEY=$(base64 --input ~/.ssh/deploy_key.pub) CUSTOM_SSH_KEY_HOSTS=bitbucket.org,github.com
+  $ heroku config:set CUSTOM_SSH_KEY=$(base64 --input ~/.ssh/deploy_key) CUSTOM_SSH_KEY_HOSTS=bitbucket.org,github.com
 
   # Linux
-  $ heroku config:set CUSTOM_SSH_KEY=$(base64 ~/.ssh/deploy_key.pub) CUSTOM_SSH_KEY_HOSTS=bitbucket.org,github.com
+  $ heroku config:set CUSTOM_SSH_KEY=$(base64 ~/.ssh/deploy_key) CUSTOM_SSH_KEY_HOSTS=bitbucket.org,github.com
   ```
 
 - Deploy your app and enjoy :)
