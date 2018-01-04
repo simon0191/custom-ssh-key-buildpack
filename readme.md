@@ -19,17 +19,16 @@ Based on [http://stackoverflow.com/a/29677091/3303182](http://stackoverflow.com/
 
   * Bitbucket: https://confluence.atlassian.com/bitbucket/add-an-ssh-key-to-an-account-302811853.html
 
-- Add CUSTOM_SSH_KEY and CUSTOM_SSH_KEY_HOSTS environment variables to you heroku app
+- Encode the private key as a base64 string and add it as the `CUSTOM_SSH_KEY` environment variable of the heroku app.
 
-  * CUSTOM_SSH_KEY must be base64 encoded
-  * CUSTOM_SSH_KEY_HOSTS is a comma separated list of the hosts that will use the custom SSH key
+- Make a comma separated list of the hosts for which the ssh key should be used and add it as the `CUSTOM_SSH_KEY_HOSTS` environment variable of the heroku app.
 
   ```
   # OSX
-  $ heroku config:set CUSTOM_SSH_KEY=$(base64 --input ~/.ssh/deploy_key.pub) CUSTOM_SSH_KEY_HOSTS=bitbucket.org,github.com
+  $ heroku config:set CUSTOM_SSH_KEY=$(base64 --input ~/.ssh/deploy_key) CUSTOM_SSH_KEY_HOSTS=bitbucket.org,github.com
 
   # Linux
-  $ heroku config:set CUSTOM_SSH_KEY=$(base64 ~/.ssh/deploy_key.pub) CUSTOM_SSH_KEY_HOSTS=bitbucket.org,github.com
+  $ heroku config:set CUSTOM_SSH_KEY=$(base64 ~/.ssh/deploy_key) CUSTOM_SSH_KEY_HOSTS=bitbucket.org,github.com
   ```
 
 - Deploy your app and enjoy :)
