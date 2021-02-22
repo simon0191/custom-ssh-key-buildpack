@@ -11,7 +11,7 @@ Based on [http://stackoverflow.com/a/29677091/3303182](http://stackoverflow.com/
 
 - Generate a new SSH key (https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/)
 
-  For this example I will suppose that you named the key `deploy_key`.
+  For this example I will assume that you named the key `deploy_key`.
 
 - Add the ssh key to your private repository account.
 
