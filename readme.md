@@ -13,6 +13,8 @@ Based on [http://stackoverflow.com/a/29677091/3303182](http://stackoverflow.com/
 
   For this example I will assume that you named the key `deploy_key`.
 
+  **Note:** Make sure key doesn't have a passphrase since it is unattended. Better if you create a separate SSH key for just this operation, which would make it easy to revoke if compromised at a later date.
+
 - Add the ssh key to your private repository account.
 
   * Github: https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/
